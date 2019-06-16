@@ -1,4 +1,4 @@
-﻿const Discord = require("discord.js");
+const Discord = require("discord.js");
 const fs = require("fs");
 const botconfig = require('./botconfig.json');
 const bot = new Discord.Client({disableEveryone: true});
@@ -273,11 +273,21 @@ if (command === 'bf' || command === 'betflip') {
   var hott = Math.floor(Math.random() * hot.length);
   var hotz = (hot[hott]);
 
+  if(h_or_t === 'head'||h_or_t === 'heads') {
+    h_or_t = 'h'
+  }
+  if(h_or_t === 'tail'||h_or_t === 'tails') {
+    h_or_t = 't'
+  }
   if(!args[0]) return message.reply("You need to bet an amount!")
   if(!args[1]) return message.reply("You need to choose tail or head.")
   if(args[0] === 'all') {
     amount_bet = i.money
   }
+  money.updateBal(message.author.id, -0).then((i) => {
+    if (i.money < args[0]) {
+        message.reply("You do not have that amount of money!")
+    } else {
   if (hotz === 'h'){
     const embed = {
       "title": "Coin Flipper",
@@ -318,15 +328,16 @@ if (command === 'bf' || command === 'betflip') {
     };
     message.channel.send({ embed });
   }
-  if(args[1] === hotz){
+  if(h_or_t === hotz){
     message.channel.send("You won! I'm adding " + amount_bet + " Lien to your balance!")
     money.updateBal(message.author.id, amount_bet)
   }
-  if(args[1] != hotz){
+  if(h_or_t != hotz){
     message.channel.send("You lost! I'm taking " + amount_bet + " Lien from your balance!")
     money.updateBal(message.author.id, -amount_bet)
   }
 
+}})
 }
 
 if (command === 'blackjack') {
